@@ -1,0 +1,67 @@
+---
+title: 'Docker Basics: Essential Commands for Beginners'
+date: '2023-05-21'
+tags: ['docker', 'commands', 'terminal']
+draft: false
+summary: 'Beginners docker commands. Learn how to pull images, create containers, manage volumes, and more.'
+thumbnail: '/static/images/blogs/thumbs/docker.jpg'
+---
+
+## Introduction
+Docker has revolutionized the way we build, ship, and deploy applications. It provides a lightweight, portable, and efficient environment for running software in containers. If you're new to Docker and want to get started with the basics, this blog post is for you. We'll cover some essential Docker commands that will help you kickstart your journey into containerization.
+
+## 1. Installation
+Before diving into the commands, ensure that you have Docker installed on your system. Visit the official Docker website and follow the installation instructions for your operating system.
+
+## 2. Docker Image Commands
+Docker images are the building blocks of containers. Here are some fundamental commands to work with Docker images:
+<p>
+- `docker pull <image_name>`: Downloads an image from a Docker registry.
+- `docker images`: Lists the available Docker images on your system.
+- `docker rmi <image_name>`: Removes a Docker image from your local registry.
+</p>
+
+
+## 3. Docker Container Commands
+Containers are the running instances of Docker images. Let's explore some important commands to manage Docker containers:
+<p>
+- `docker run <image_name>`: Creates and starts a new container from a Docker image.
+- `docker ps`: Lists the running containers.
+- `docker stop <container_id>`: Stops a running container.
+- `docker rm <container_id>`: Removes a stopped container from your system.
+</p>
+
+## 4. Docker Volume Commands
+Docker volumes allow data to persist outside containers. These commands are useful for managing volumes:
+<p>
+- `docker volume create <volume_name>`: Creates a new Docker volume.
+- `docker volume ls`: Lists the available Docker volumes.
+- `docker volume rm <volume_name>`: Removes a Docker volume.
+</p>
+
+## 5. Docker Network Commands
+Docker networks enable communication between containers. Here are some key commands for managing Docker networks:
+<p>
+- `docker network create <network_name>`: Creates a new Docker network.
+- `docker network ls`: Lists the available Docker networks.
+- `docker network rm <network_name>`: Removes a Docker network.
+</p>
+
+## 6. Docker Compose Commands
+Docker Compose is a powerful tool for defining and managing multi-container Docker applications. It allows you to specify the services, networks, volumes, and configurations for your application in a single `docker-compose.yml` file. Here are some essential Docker Compose commands:
+<p>
+- `docker-compose up`: Creates and starts the containers defined in the `docker-compose.yml` file.
+- `docker-compose down`: Stops and removes the containers, networks, and volumes defined in the `docker-compose.yml` file.
+- `docker-compose build`: Builds or rebuilds the Docker images specified in the `docker-compose.yml` file.
+- `docker-compose start`: Starts the containers without building or recreating them.
+- `docker-compose stop`: Stops the running containers defined in the `docker-compose.yml` file.
+- `docker-compose restart`: Restarts the containers specified in the `docker-compose.yml` file.
+- `docker-compose logs`: Displays the logs of the containers defined in the `docker-compose.yml` file.
+- `docker-compose exec`: Executes a command inside a running container.
+</p>
+Docker Compose provides many more commands and options to manage complex application setups.
+Check out the [official Docker documentation](https://docs.docker.com) for more information.
+
+
+
+

@@ -1,0 +1,37 @@
+---
+title: 'Mysql not starting on docker'
+date: '2023-05-22'
+tags: ['docker', 'mysql']
+draft: false
+summary: 'Mysql not starting on docker. Issue: Another process with pid 62 is using unix socket file. -Solved'
+thumbnail: '/static/images/blogs/thumbs/docker.jpg'
+---
+Recently, I encountered a problem where MySQL was not starting on Docker. I tried multiple times and also updated all the packages, but it still showed an error stating, "Another process with PID 62 is using the Unix socket file." I was using the default Sail Docker Compose file. Here are the logs from the MySQL container:
+
+```
+2023-05-21T06:51:36.478193Z 0 [ERROR] [MY-010259] [Server] Another process with pid 62 is using unix socket file.
+2023-05-21T06:51:36.478255Z 0 [ERROR] [MY-010268] [Server] Unable to setup unix socket lock file.
+2023-05-21T06:51:36.478265Z 0 [ERROR] [MY-010119] [Server] Aborting
+2023-05-21 06:51:36,663 INFO spawned: 'php' with pid 16
+```
+
+Solution:
+
+I resolved this by doing the following command:
+
+```bash
+docker-compose down --volumes
+```
+
+And then:
+
+```bash
+sail up --build
+```
+
+If you encountered with this problem you can try this.
+
+Here's what each part of the command does:
+
+- docker-compose down --volumes: Stops and removes containers, networks, and volumes defined in your docker-compose.yml file, including associated volumes.
+- sail up --build: Starts containers defined in your Laravel Sail environment, rebuilding Docker images before starting them.

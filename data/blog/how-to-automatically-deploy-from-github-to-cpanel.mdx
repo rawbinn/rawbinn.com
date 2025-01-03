@@ -1,0 +1,86 @@
+---
+title: 'How to automatically deploy from GitHub Private Repository to cPanel using Github Action'
+date: '2024-01-06'
+tags: ['github', 'cpanel', 'auto-deployment']
+draft: false
+summary: "In this guide, we'll walk you through the step-by-step process to deploy your private github repository to cpanel using github actions."
+images: ['/static/images/blogs/autodeployment-github-to-cpanel/autodeployment-to-cpanel-using-github-actions.jpg']
+thumbnail: '/static/images/blogs/thumbs/github_cpanel.jpg'
+---
+![Auto-deployement cPanel to GitHub](/static/blogs/autodeployment-github-to-cpanel/autodeployment-to-cpanel-using-github-actions.jpg)
+
+Hello there! If you're here, it means you're looking to set up auto-deployment in your cPanel from a GitHub repository. I've been in the same boat, starting with manual uploads to cPanel via File Manager or FTP clients like FileZilla. I then explored cPanel's GitHub feature, which allowed pulling from GitHub, but it still involved manual steps. So, here's a simple solution to lift that burden off your shoulders – using GitHub Actions to auto-deploy a private repository to cPanel on each push. Before starting steps lets me introduce GitHub Actions.
+
+**What is GitHub Actions?**
+
+[GitHub Actions](https://docs.github.com/en/actions/learn-github-actions/understanding-github-actions) is a CI/CD tool for the GitHub flow. You can use it to integrate and deploy code changes to a third-party application platform as well as test, track, and manage code changes.
+
+At the most basic level, GitHub Actions brings automation directly into the software development lifecycle on GitHub via event-driven triggers. These triggers are specified events that can range from creating a pull request to building a new brand in a repository.
+All GitHub Actions automations are handled via workflows, which are YAML files placed under the .github/workflows directory in a repository that define automated processes.
+
+**How to use GitHub Actions for Deployment?**
+
+First you have to create a repository in you local machine and push the latest changes to your private github repository. Another thing you need is cpanel account. In cpanel you have to create a ftp user account, which we will need later.
+
+Let's get started
+
+**STEPS:**
+
+1. **Log in to your cPanel account and create an FTP account.**
+After creation, copy the FTP username, password, hostname, and port – we'll need these for GitHub Actions. Test the FTP account using an FTP client to ensure everything is set up correctly.
+
+![Cpanel Create FTP Account](/static/images/blogs/autodeployment-github-to-cpanel/rawbinn.com_ftp.jpg)
+
+![Cpanel Create FTP Account](/static/images/blogs/autodeployment-github-to-cpanel/rawbinn.com_ftp_create.jpg)
+
+2. **Log in to your GitHub account and navigate to your repository.**
+3. Click on the **"Actions"** tab, and you'll find the **"set up a workflow yourself"** link. Click on it, and it will prompt you to create a **.yml** file.
+
+![Navigate to actions and click create workflow](/static/images/blogs/autodeployment-github-to-cpanel/rawbinn.com_github_actions.jpg)
+
+4. **Copy and paste the provided code into your main.yml file and commit the changes.**
+
+```yml
+on:
+  push:
+    branches:
+      - master
+name: 🚀 Deploy website on push
+jobs:
+  web-deploy:
+    name: 🎉 Deploy
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🚚 Get latest code
+      uses: actions/checkout@v3
+    
+    - name: 📂 Sync fisles
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      with:
+        server: yourdomain.com
+        username: ${{ secrets.ftp_username }}
+        password: ${{ secrets.ftp_password }}
+```
+
+![action code for .yml file](/static/images/blogs/autodeployment-github-to-cpanel/rawbinn.com_github_actions_yml.jpg)
+
+5. **Go to "Settings."**
+6. Navigate to **"Secrets and variables"** from left menu and from dropdown click on **"Actions"** menu.
+
+![Create secrets for gtihub actions](/static/images/blogs/autodeployment-github-to-cpanel/rawbinn.com_go_to_github_secrets.jpg)
+
+7. **Create repository secrets that has been used in username and password in above .yml file**
+
+![Create secrets for gtihub actions](/static/images/blogs/autodeployment-github-to-cpanel/rawbinn.com_create_secrets.jpg)
+
+Congratulations! You have successfully completed the configuration. Now, pull the changes from GitHub that we made by creating the main.yml file. Make some modifications in your local repository and push those changes to your GitHub repository.
+
+Navigate to your GitHub Actions, and you will find a list of actions that were executed during the push. A successful deployment will be indicated by a green icon, while an unsuccessful one will display a red icon. If green icon shown go to your site and see the changes, if red then click the red icon link and see the deployement error message and fix the issue.
+
+![Copy paste yml code in .yml file](/static/images/blogs/autodeployment-github-to-cpanel/rawbinn.com_actions.jpg)
+
+With these steps, you've now set up GitHub Actions for auto-deployment. Pushing updates to your GitHub repository will trigger an automatic deployment to cPanel, making your development workflow smoother. 
+
+You can check this [https://github.com/SamKirkland/FTP-Deploy-Action](https://github.com/SamKirkland/FTP-Deploy-Action) to view more actions. Also check official documentation of [GitHub Actions](https://docs.github.com/en/actions/learn-github-actions/understanding-github-actions)
+
+If your are unable to deploy inbox me at [contact@rawbinn.com]

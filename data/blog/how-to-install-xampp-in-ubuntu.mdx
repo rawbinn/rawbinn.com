@@ -1,0 +1,55 @@
+---
+title: 'How To Install Xampp In Ubuntu'
+date: '2019-04-02'
+tags: ['xampp', 'ubuntu']
+draft: false
+summary: 'Now follow the steps to install xampp: Place your downloaded xampp tar.gz file in Desktop folder. Open terminal [ctrl+alt+T]. Now run below command in terminal.'
+images: ['/static/images/blogs/how-to-install-xampp-in-ubuntu.jpg']
+thumbnail: '/static/images/blogs/thumbs/xampp_ubuntu.jpg'
+---
+![Xampp Featured Image](/static/images/blogs/how-to-install-xampp-in-ubuntu.jpg)
+Xampp is free and open source cross-platform web server solution stack package, consisting mainly of the Apache HTTP Server, MySQL database and interpreters for scripts written in the PHP and Perl Programming language.
+Xampp previously known as Lampp.
+
+To begin the installation download xampp from official website.
+
+Now follow the steps to install xampp:
+
+Place your downloaded xampp tar.gz file in Desktop folder.
+Open terminal [ctrl+alt+T].
+Now run below command in terminal.
+```bash
+cd Desktop
+```
+[ D is capital in Desktop]
+
+```bash
+sudo -s
+tar xvfz xampp-linux-1.8.1.tar.gz -C /opt
+```
+(Note: This version will install xampp 1.8.1 version If you want to install another version then replace xampp-linux-1.8.1.tar.gz with your version).
+
+```bash
+sudo chmod 777 -R /opt/lampp/htdocs
+```
+
+Installing process finished. Now you can start xampp.
+ To start type following command in terminal. 
+ 
+ ```bash
+sudo /opt/lampp/lampp start
+```
+
+Xampp server will as follows:
+
+(Starting XAMPP for Linux 1.8.1...
+XAMPP: Starting Apache with SSL (and PHP5)...
+XAMPP: Starting MySQL...
+XAMPP: Starting ProFTPD...
+XAMPP for Linux started.)
+
+To stop type following command in terminal.
+
+```bash
+sudo /opt/lampp/lampp stop
+```
