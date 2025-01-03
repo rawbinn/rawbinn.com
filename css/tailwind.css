@@ -94,6 +94,10 @@ input:-webkit-autofill:focus {
   @apply text-green-500;
 }
 
+.featured-image img {
+  margin-top: 0px;
+}
+
 .animated {
   position: relative;
 }
