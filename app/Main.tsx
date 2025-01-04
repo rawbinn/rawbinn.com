@@ -4,10 +4,15 @@ import siteMetadata from '@/data/siteMetadata'
 import { formatDate } from 'pliny/utils/formatDate'
 import NewsletterForm from 'pliny/ui/NewsletterForm'
 import Image from 'next/image'
+import tagData from 'app/tag-data.json'
+import { slug } from 'github-slugger'
 
 const MAX_DISPLAY = 5
 
 export default function Home({ posts }) {
+  const tagCounts = tagData as Record<string, number>
+  const tagKeys = Object.keys(tagCounts)
+  const sortedTags = tagKeys.sort((a, b) => tagCounts[b] - tagCounts[a])
   return (
     <>
       <section className="about py-8 sm:py-16">
@@ -47,7 +52,16 @@ export default function Home({ posts }) {
           </div>
         </div>
       </section>
-      <div className="divide-y divide-gray-200 dark:divide-gray-700 sm:mt-12 sm:py-12">
+      <div className="hidden sm:block">
+        {sortedTags.map((t) => (
+          <Link href={`/tags/${slug(t)}`} key={t}>
+            <span className="m-2 inline-block rounded-full border px-2 py-1 text-sm">
+              {t.split(' ').join('-')}
+            </span>
+          </Link>
+        ))}
+      </div>
+      <div className="divide-y divide-gray-200 dark:divide-gray-700">
         <div className="space-y-2 pb-8 pt-6 text-center  sm:text-left md:space-y-5">
           <h1 className="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-5xl md:leading-14">
             Recent Posts
