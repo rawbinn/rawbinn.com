@@ -1,0 +1,114 @@
+---
+title: 'Where Is Your Code? Git’s Hidden Stages That New Developers Overlook'
+date: '2024-11-24'
+tags: ['git']
+draft: false
+summary: 'Learn the 4 hidden stages of Git that most new developers overlook! Discover how your code moves through the Working Directory, Staging Area, Local Repository, and Remote Repository'
+thumbnail: '/static/images/blogs/thumbs/git_4_stages.jpg'
+---
+
+<div className="featured-image">
+![How git works?](/static/images/blogs/how_git_works.svg)
+</div>
+Git can initially seem confusing, especially for newcomers to version control systems. However, grasping a few foundational concepts can make navigating Git much clearer and more intuitive. In this article, we will demystify Git by breaking down its basic command workflow, highlighting the four key locations where your code is stored, and clarifying some common misconceptions.
+
+## Understanding Git's Architecture
+
+Before we delve into the specific commands, it’s crucial to identify where your code resides within Git. A common assumption is that code exists in only two places: on GitHub (or any other remote repository) and your local machine. However, the reality is that there are **four main locations** where your code lives:
+
+1. **Working Directory**  
+   This is your local development environment where you actively edit files. Think of this as your coding playground.  
+
+2. **Staging Area**  
+   The Staging Area serves as a temporary holding spot for changes before they are committed. This is where you prepare the files you want to include in your next commit.  
+
+3. **Local Repository**  
+   This is the directory on your local machine where committed changes are stored. It acts as a history of your project, allowing you to track changes over time.  
+
+4. **Remote Repository**  
+   A server, often hosted on platforms like GitHub, GitLab, or Bitbucket, where your code is shared and backed up. This location enables collaboration with your team members.  
+
+With these four locations in mind, let’s visualize the journey your code takes as it moves through Git commands. Most Git commands are designed to transfer files between these locations effectively.
+
+## The Basic Command Workflow
+
+### 1. Cloning a Repository
+
+The very first step to working with a project is to **clone** an existing repository. This creates a complete local version of the project, along with its entire history. The command used for this is:
+```bash
+git clone <repository-url>
+```
+
+### 2. Working in the Working Directory
+
+Once you have the repository cloned, you are in the Working Directory. Here, you can make changes to your files as needed. When you're ready to save these changes, the next steps are crucial.
+
+### 3. Staging Your Changes
+
+Next, you need to stage your changes. This is done with the command:
+```bash
+git add <file-name>
+```
+
+This command adds your modified files to the **Staging Area**, effectively creating a snapshot of the changes you've made. It’s best to think of this as a checkpoint where you gather all changes to prepare them for committing.
+
+### 4. Committing Changes
+
+To create a permanent record of these staged changes, use:
+```bash
+git commit -m "Your commit message"
+```
+
+The **commit** command saves the files from the Staging Area to your Local Repository, locking in the changes and allowing you to refer back to them. This is like taking a snapshot in time of your project.
+
+### 5. Pushing to the Remote Repository
+
+When you're ready to share your work or back it up, you use:
+```bash
+git push origin <branch-name>
+```
+
+This command sends your commits to the **Remote Repository**, making your changes available to your team and ensuring that your code is backed up on a shared server.
+
+### 6. Pulling Updates from Teammates
+
+Collaboration in Git is a two-way street. If you need to bring changes from your teammates into your local environment, you’ll execute the command:
+```bash
+git pull origin <branch-name>
+```
+
+This command combines two essential actions: it first **fetches** the latest updates from the remote repository and then **merges** those updates into your Local Repository. Thus, git pull integrates your colleague’s work seamlessly into your own.
+
+## Branching and Context Switching
+
+Sometimes you might need to switch contexts, such as when addressing a bug on another branch. This is where **branching** in Git comes into play. Branching allows you to diverge from the main codebase to work on new features without disrupting the main project. Key commands involved in branching include:
+- **Creating a New Branch:**  
+  ```bash
+  git branch <branch-name>
+  ```
+- **Switching Branches:**  
+  ```bash
+  git switch <branch-name>
+  ```
+- **Merging Branches:**  
+  ```bash
+  git merge <branch-name>
+  ```
+- **Resolving Merge Conflicts:**  
+  Merging can occasionally lead to conflicts if changes overlap. Learning to resolve these conflicts is a vital skill for any developer using Git.
+
+Git branching enables isolated development workflows, allowing multiple features to be developed concurrently without interfering with one another.
+
+## Utilizing Graphical Git Tools
+
+For those who prefer a more visual approach to Git, various graphical tools are available, such as **GitHub Desktop** and **SourceTree**. These tools provide visual interfaces and shortcuts for common commands, simplifying the learning curve for new users.
+
+## Conclusion
+
+Understanding how Git works and the significance of the four primary locations of code—Working Directory, Staging Area, Local Repository, and Remote Repository—empowers developers to efficiently manage their projects. Whether you’re cloning a repository, staging changes, or merging branches, getting acquainted with these concepts not only clarifies your workflow but also enhances collaboration within teams.
+
+For those eager to delve deeper into more complex Git scenarios like merging and rebasing, consider exploring the additional resources available to expand your knowledge further.  
+
+If you're interested in more insights on system design and version control, subscribe to our newsletter to stay updated on future articles.  
+
+Explore the fascinating world of Git, and make your development process smoother and more efficient!
