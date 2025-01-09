@@ -2,10 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-p,li {
-  @apply text-xl;
-}
-
 .task-list-item::before {
   @apply hidden;
 }

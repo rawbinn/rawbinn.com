@@ -53,6 +53,12 @@ module.exports = {
             code: {
               color: theme('colors.indigo.500'),
             },
+            'p,li': {
+              fontSize: '1.125rem',
+              '@screen md': {
+                fontSize: '1.25rem',
+              },
+            },
           },
         },
         invert: {
@@ -72,5 +78,5 @@ module.exports = {
       }),
     },
   },
-  plugins: [require('@tailwindcss/forms'), require('@tailwindcss/typography')],
+  plugins: [require('@tailwindcss/forms'), require('@tailwindcss/typography'), ],
 }
