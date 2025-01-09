@@ -7,9 +7,9 @@ const siteMetadata = {
   intro: "I'm a passionate software engineer with over 8 years of experience, specializing in PHP and React.js. Dedicated to continuous learning, crafting scalable solutions, and delivering innovative projects with a focus on quality and performance.",
   jobTitle: "Software Engineer",
   language: 'en-us',
-  theme: 'system', // system, dark or light
+  theme: 'light', // system, dark or light
   siteUrl: 'https://rawbinn.com',
-  siteRepo: 'https://github.com/rawbinn',
+  siteRepo: 'https://github.com/rawbinn/rawbinn.com',
   siteLogo: `${process.env.BASE_PATH || ''}/static/images/logo.png`,
   socialBanner: `${process.env.BASE_PATH || ''}/static/images/twitter-card.png`,
   mastodon: 'https://mastodon.social/@mastodonuser',
