@@ -51,7 +51,7 @@ module.exports = {
               fontWeight: '600',
             },
             code: {
-              color: theme('colors.indigo.500'),
+              color: theme('colors.pink.500'),
             },
             'p,li': {
               fontSize: '1.125rem',
@@ -63,6 +63,7 @@ module.exports = {
         },
         invert: {
           css: {
+            '--tw-prose-pre-bg': theme('colors.gray.800'),
             a: {
               color: theme('colors.primary.500'),
               '&:hover': {
@@ -78,5 +79,5 @@ module.exports = {
       }),
     },
   },
-  plugins: [require('@tailwindcss/forms'), require('@tailwindcss/typography'), ],
+  plugins: [require('@tailwindcss/forms'), require('@tailwindcss/typography')],
 }
