@@ -22,6 +22,16 @@
   @apply my-5;
 }
 
+.markdown-alert.markdown-alert-caution {
+  border-color: var(--borderColor-danger-emphasis,var(--color-danger-emphasis));
+}
+
+.markdown-alert {
+  border-top: 1px solid var(--borderColor-default, var(--color-border-default));
+  border-right: 1px solid var(--borderColor-default, var(--color-border-default));
+  border-bottom: 1px solid var(--borderColor-default, var(--color-border-default));
+}
+
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
