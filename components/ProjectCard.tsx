@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import Project, { Project } from '@/data/projectsData'
+import { Project } from '@/data/projectsData'
 
 interface ProjectCardProps {
   project: Project
