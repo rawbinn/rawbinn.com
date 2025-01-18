@@ -2,7 +2,7 @@ export interface Project {
   title: string
   description: string
   href?: string
-  imgSrc?: string
+  imgSrc: string
   techStacks?: string[]
   github?: string
 }

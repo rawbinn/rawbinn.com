@@ -1,6 +1,6 @@
+import { Project } from '@/data/projectsData'
 import Image from 'next/image'
 import Link from 'next/link'
-import Project from '@/data/projectsData'
 
 interface ProjectCardProps {
   project: Project
@@ -54,7 +54,7 @@ const ProjectCard = (project: ProjectCardProps) => {
               className="text-primary text-base font-medium leading-6 hover:text-sky-600 dark:hover:text-sky-400"
               target="_blank"
               rel="noopener noreferrer"
-              href={href}
+              href={href || '#'}
             >
               Learn more →
             </Link>
