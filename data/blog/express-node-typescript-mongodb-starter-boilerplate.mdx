@@ -1,0 +1,141 @@
+---
+title: 'Kickstart Your Node.js Project: Express.js, TypeScript, and MongoDB Boilerplate?'
+date: '2024-12-22'
+tags: ['nodejs', 'expressjs', 'typescript', 'mongodb', 'boilerplate']
+draft: false
+summary: 'Starter boilerplate for Express.js, TypeScript, and MongoDB projects with essential tools like Joi, Mongoose, Prettier, Jest, and more.'
+thumbnail: '/static/images/blogs/thumbs/express-typescript-mongo-starter.jpg'
+---
+Creating a robust and scalable backend is often the first step for any modern web application. To help beginners smoothly start their **Express.js**, **TypeScript**, and **MongoDB** projects, I have created a boilerplate that serves as a solid foundation. It is designed with a modular structure and incorporates essential tools like **Joi** for validation, **Mongoose** for database management, **Prettier** for code formatting, **Jest** for testing, **jsonwebtoken** for authentication, and more. This blog will walk you through the structure and features of this boilerplate, enabling you to kickstart your project and scale it effectively.
+
+## 🔎 What included in this Boilerplate?
+This starter is designed with scalability and developer productivity in mind. It includes:
+
+1. **TypeScript**: Provides type safety and improved developer experience.
+2. **Mongoose**: Simplifies MongoDB interactions with schema-based modeling.
+3. **Joi**: Facilitates robust data validation.
+4. **Prettier**: Ensures consistent code formatting.
+5. **Jest**: Enables writing and running tests effortlessly.
+6. **ESLINT**: Helps maintain code quality and consistency.
+7. **JWT**: It uses JSON Web Tokens for secure authentication.
+
+## 📚 Folder Structure
+The boilerplate follows a modular and organized folder structure:
+```
+|-api
+|--auth
+|---__test__
+|----auth.controller.test.ts
+|---validations
+|----auth.validation.ts
+|---auth.controller.ts
+|---auth.routes.ts
+|---auth.service.ts
+|--user
+|---__test__
+|----user.controller.test.ts
+|---validations
+|---user.controller.ts
+|---user.routes.ts
+|---user.service.ts
+|--api.routers.ts
+|-config
+|--database.ts
+|-middleware
+|--auth.middleware.ts
+|--error.middleware.ts
+|--validation.middleware.ts
+|-utils
+|--hash.util.ts
+|--http.exception.ts
+|--response.util.ts
+|-index.ts
+```
+
+## 🔄 Explanation of Key Directories
+`api`
+
+This directory contains modularized features of the application (e.g., `auth`, `user`). Each feature includes its routes, controller, service, and validations, tests promoting separation of concerns.
+
+- `auth`: Handles authentication-related logic like login, registration, and JWT token management.
+
+    - `auth.controller.ts`: Defines endpoints.
+    - `auth.service.ts`: Implements business logic.
+    - `auth.routes.ts`: Maps routes to controllers.
+    - `auth.validation.ts`: Defines request validation schemas.
+
+- `user`: Manages user-related operations like fetching user data and updating profiles.
+    - Similar structure to `auth`.
+
+`config`
+
+Contains application configuration files.
+
+- `database.ts`: Configures MongoDB connection using Mongoose.
+
+`middleware`
+
+Custom middleware to handle common tasks.
+
+- `auth.middleware.ts`: Handles JWT authentication.
+- `error.middleware.ts`: Catches and formats errors.
+- `validation.middleware.ts`: Validates incoming requests using Joi.
+
+`utils`
+
+Utility functions and reusable modules.
+
+- `hash.util.ts`: Handles password hashing using libraries like bcrypt.
+- `http.exception.ts`: Custom error handling class.
+- `response.util.ts`: Standardizes API responses.
+
+**Root Files**
+- `index.ts`: Entry point of the application. Sets up middleware, routes, and starts the server.
+- `api.routers.ts`: Centralized routing for all API modules.
+
+## Getting Started
+
+### Prerequisites
+
+Ensure you have the following installed:
+
+- [Node.js](https://nodejs.org/) (v16 or later recommended)
+- [MongoDB](https://www.mongodb.com/) (local or cloud instance)
+- [npm](https://www.npmjs.com/) or [yarn](https://yarnpkg.com/)
+
+### Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/rawbinn/Express.js-TypeScript-MongoDB-Starter.git
+   cd express-typescript-mongodb-starter
+   ```
+
+2. Install dependencies:
+    ```
+    npm install
+    # or
+    yarn install
+    ```
+
+3. Create a .env file in the root directory and add your configuration:
+    ```
+    PORT=3000
+    MONGO_PATH=mongodb://localhost:27017/your-database-name
+    ```
+    
+4. Start the development server:
+    ```
+    npm run dev
+    # or
+    yarn dev
+    ```
+## Environment
+To edit environment variables, create a file with name `.env` and copy the contents from `.env.sample` to start with.
+
+| Var Name  | Type  | Default | Description  |
+|---|---|---|---|
+| NODE_ENV  | string  | `development` |API runtime environment. eg: `production`  |
+|  PORT | number  | `3000` | Port to run the API server on |
+|  MONGO_PATH | string  | `mongodb://localhost:27017/your-databse-name` | URL for MongoDB |
+|  ACCESS_TOKEN_SECRET | string  | `secret` | JWT Token's Secret Key |
