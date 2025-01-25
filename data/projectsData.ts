@@ -25,7 +25,22 @@ const projectsData: Project[] = [
     imgSrc: '/static/images/projects/coinsense.png',
     href: 'https://coinsense.rawbinn.com',
     techStacks: ['NextJs', 'Laravel', 'Bootstrap'],
-  }
+  },
+  {
+    title: 'LaraPress: CMS using Laravel',
+    description: `LaraPress is a content management system (CMS) built using Laravel. It has similar features as other CMS, developed to speed up the website development process having a user-friendly theme options, custom post types, page templates, custom plugins, advance media management, and more.`,
+    imgSrc: '/static/images/projects/larapress.png',
+    href: 'https://larapress.rawbinn.com',
+    techStacks: ['Laravel', 'Blade', 'Bootstrap'],
+  },
+  {
+    title: 'Express.js-TypeScript-MongoDB-Starter',
+    description: `Starter boilerplate for Express.js, TypeScript, and MongoDB projects with essential tools like Joi, Mongoose, Prettier, Jest, and more.`,
+    imgSrc: '/static/images/projects/expressjs-mongodb-typescript.jpg',
+    href: 'https://github.com/rawbinn/Express.js-TypeScript-MongoDB-Starter',
+    github: 'https://github.com/rawbinn/Express.js-TypeScript-MongoDB-Starter',
+    techStacks: ['Express.js', 'TypeScript', 'MongoDB'],
+  },
 ]
 
 export default projectsData
