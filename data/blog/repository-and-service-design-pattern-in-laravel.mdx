@@ -1,0 +1,235 @@
+---
+title: 'Why I Prefer the Service Pattern over Repository Pattern in Laravel'
+date: '2024-12-29'
+tags: ['design-patterns', 'laravel']
+draft: false
+summary: 'When working on Laravel applications, two design patterns often come up in discussions about structuring code for maintainability and scalability: the Repository Pattern and the Service Layer Pattern. In this blog post, I’ll discuss both patterns from my perspective, share their respective benefits, and explain when each pattern is appropriate to use.'
+thumbnail: '/static/images/blogs/thumbs/repo-vs-service.jpg'
+---
+When working on Laravel applications, two design patterns often come up in discussions about structuring code for maintainability and scalability: **the Repository Pattern** and **the Service Layer Pattern**. While both of these patterns can bring clarity and structure to an application, there’s an ongoing debate over which one is better, especially in the context of Laravel. In this blog post, I’ll discuss both patterns from my perspective, share their respective benefits, and explain when each pattern is appropriate to use.
+
+## 🤔 The Repository Pattern – A Good Abstraction, But Overused?
+
+The **Repository Pattern** is designed to provide an abstraction layer between your application’s business logic and the underlying data source. By encapsulating all data access logic inside repository classes, you can keep your application flexible and decoupled from specific data storage technologies (such as MySQL, MongoDB, or others).
+
+**Why Use the Repository Pattern?**
+1. **Data Access Abstraction**: Repositories allow you to swap the underlying data source (e.g., from MySQL to MongoDB) without affecting the rest of your application. The repository abstracts away the details of how data is retrieved and saved.
+2. **Centralized Query Logic**: By centralizing data access logic, you prevent repetition and reduce the chances of errors in SQL or query building.
+3. **Testing**: Since repositories act as an intermediary between your application and the database, they can make it easier to mock data fetching operations for testing purposes.
+
+**Why I feel Repositories Pattern is useless in Laravel**
+
+As a Laravel developer, I’ve often found myself revisiting the debate surrounding the Repository Pattern. Initially, I was intrigued by the idea of creating an additional abstraction layer for data access. However, after working on numerous projects, I’ve come to the conclusion that the Repository Pattern is often unnecessary in Laravel. In fact, I feel that implementing it in most cases adds unnecessary complexity without delivering any significant benefits. Here’s why.
+
+1. **Laravel’s Eloquent is Already an Abstraction**
+
+    One of Laravel’s standout features is its Eloquent ORM, which provides a beautiful, intuitive abstraction for interacting with the database. It handles everything from basic CRUD operations to complex relationships and even query scopes.
+
+    When using Eloquent, I’ve never felt the need for another abstraction layer like the Repository Pattern. For instance, why would I write a repository method like `getAllUsers()` that internally calls `User::all()`? It’s redundant, and all I’m doing is adding more code to maintain without any real gain.
+
+2. **Tightly Coupling to Eloquent**
+
+    One of the main arguments for the Repository Pattern is that it decouples the application’s business logic from the data source, making it easier to switch databases or storage mechanisms in the future. While this sounds great in theory, in reality, I’ve rarely seen a situation where an application had to switch from one database to another.
+
+    Even if such a situation arises, Laravel’s database abstraction layer (DB Facades, Query Builder, and Eloquent) already provides the necessary flexibility to adapt. In most implementations of the Repository Pattern, I’ve noticed that developers tightly couple their repositories to Eloquent models anyway, defeating the entire purpose of the pattern. 
+
+    **UserRepository.php (Repository)**
+    ```php
+    namespace App\Repositories;
+
+    use App\Models\User;
+
+    class UserRepository
+    {
+        // Fetch all users
+        public function getAll()
+        {
+            return User::all(); // Directly using Eloquent here
+        }
+    }
+    ```
+
+    **UserController.php (Controller)**
+
+    ```php
+    namespace App\Http\Controllers;
+
+    use App\Repositories\UserRepository;
+
+    class UserController extends Controller
+    {
+        private $userRepository;
+
+        public function __construct(UserRepository $userRepository)
+        {
+            $this->userRepository = $userRepository;
+        }
+
+        // Get all users
+        public function index()
+        {
+            $users = $this->userRepository->getAll(); // Eloquent models returned
+            return view('users.index', compact('users'));
+        }
+    }
+    ```
+
+There is one way to implement the Repository Pattern in Laravel with Eloquent is by enforcing the use of (Data Transfer Objects) DTOs. In this approach, the repository is responsible for converting Eloquent models into DTOs. This ensures that Eloquent is used only within the repository. This approach abstracts the persistence layer, making it easier to swap out Eloquent for another ORM or database technology in the future. Additionally, it encourages clean separation of concerns, where business logic resides in services and data access is restricted to repositories.
+
+However, this approach comes with a significant trade-off: developer overhead. Eloquent's strength lies in its Active Record pattern, which simplifies database operations by allowing direct interactions with models. By isolating Eloquent to repositories, you effectively lose its simplicity and convenience, forcing developers to write more boilerplate code for DTO mappings and repository methods. This can slow down development and increase the cognitive load, especially for smaller or less complex applications where such flexibility might not even be necessary. In most cases, Eloquent is tightly integrated into Laravel’s ecosystem, so fighting its conventions to implement a repository pattern may feel redundant unless your project truly demands ORM abstraction or is expected to switch persistence layers.
+
+**If you truly need to implement the Repository Pattern, using Eloquent may not be ideal. Instead, you could opt for Doctrine ORM, which is inherently better suited for the Repository Pattern.**
+
+The Repository Pattern works exceptionally well with Doctrine because Doctrine uses the Data Mapper pattern, where entities are plain PHP objects (POPOs) and do not directly interact with the database. This separation of concerns makes repositories essential for encapsulating the database access logic, unlike Eloquent, which inherently couples entities to database operations through the Active Record pattern. For more Doctrine with Repositories [click here](https://www.laraveldoctrine.org/docs/1.8/orm/repositories). 
+
+
+## 🔎 The Service Layer Pattern – A Better Fit for Business Logic
+
+Instead of repositories, I prefer to use the **Service Layer Pattern** for handling business logic. Service classes keep my controllers slim and organized while allowing me to focus on the actual business logic without worrying about data access abstraction.
+
+**Why Use the Service Layer Pattern?**
+1. **Separation of Concerns**: By moving business logic out of controllers and models, service classes allow you to separate different layers of your application. This makes your code more organized, easier to maintain, and testable.
+2. **Reusability**: Services can be reused across different controllers or even other services. This reduces duplication of code and ensures that the same logic isn't written multiple times.
+3. **Simplified Controllers**: In a typical controller, you might end up with a lot of code for processing business logic, database queries, or complex data manipulation. By using the service pattern, you can offload this work to services, making controllers lighter and more focused on handling HTTP requests and responses.
+3. **Ease of Testing**: Service classes can be easily tested in isolation, making it simpler to mock dependencies and perform unit testing.
+
+It’s also great when you want to **avoid bloating controllers** with too much logic, which can make them difficult to maintain and test.
+
+Here’s a simple **example** of how you can implement a User Registration service in Laravel, where the same service is used for 3 different mediums: UI (web panel), API (mobile), and Console (for development purpose).
+
+**1. Create UserService Class (Service Class)**
+This service will handle the logic for user registration. It will be used across all mediums.
+```php
+namespace App\Services;
+
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
+
+class UserService
+{
+    /**
+     * Register a new user.
+     *
+     * @param array $data
+     * @return User
+     */
+    public function registerUser(array $data)
+    {
+        // Validate input (in case it is needed for further customization)
+        $this->validateUserData($data);
+
+        // Create user
+        return User::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => Hash::make($data['password']),
+        ]);
+    }
+
+    /**
+     * Validate user data
+     *
+     * @param array $data
+     * @throws ValidationException
+     */
+    protected function validateUserData(array $data)
+    {
+        // For simplicity, use Laravel's Validator directly. 
+        // You can also use form request validation if required.
+        $validator = \Validator::make($data, [
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email',
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+
+        if ($validator->fails()) {
+            throw new ValidationException($validator);
+        }
+    }
+}
+```
+
+**2. Create UserController (UI/Web Panel)**
+In your web controller, you can use this service to register a user when the form is submitted.
+
+```php
+namespace App\Http\Controllers;
+
+use App\Services\UserService;
+use Illuminate\Http\Request;
+
+class UserController extends Controller
+{
+    protected $userService;
+
+    public function __construct(UserService $userService)
+    {
+        $this->userService = $userService;
+    }
+
+    /**
+     * Handle registration form submission.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function register(Request $request)
+    {
+        $data = $request->only(['name', 'email', 'password', 'password_confirmation']);
+        
+        try {
+            $user = $this->userService->registerUser($data);
+            return redirect()->route('login')->with('success', 'User registered successfully');
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
+    }
+}
+```
+
+**3. Create API Controller (Mobile API)**
+You can also expose the same user registration functionality through an API for mobile applications.
+
+```php
+namespace App\Http\Controllers\Api;
+
+use App\Services\UserService;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Response;
+
+class AuthController extends Controller
+{
+    protected $userService;
+
+    public function __construct(UserService $userService)
+    {
+        $this->userService = $userService;
+    }
+
+    /**
+     * Register a new user via API.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function register(Request $request)
+    {
+        $data = $request->only(['name', 'email', 'password', 'password_confirmation']);
+
+        try {
+            $user = $this->userService->registerUser($data);
+            return response()->json(['message' => 'User registered successfully'], Response::HTTP_CREATED);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
+        }
+    }
+}
+```
+Or, you can use the same service in a console command to register users in bulk or for testing purposes.
+
+## 🎯 Conclusion
+In conclusion, both the Repository pattern and the Service pattern have their advantages and disadvantages, but the choice between them largely depends on the specific needs of your Laravel project. I believe that while both patterns offer valuable structure, it's crucial to consider the scale and complexity of the application you're building. If you're using Eloquent, I find that the Service pattern is usually sufficient to handle business logic, as it integrates well with Laravel's simplicity and rapid development focus. However, if you're using Doctrine or planning for more flexibility down the road, incorporating the Repository pattern alongside the Service pattern can provide better decoupling and maintainability.
+
+The key takeaway for me is that while patterns like Repository and Service can help structure your code, they can also add unnecessary complexity if not carefully implemented. Laravel’s strength lies in its simplicity, and often, overengineering can hinder more than help. So, it’s important to understand the needs of your application and choose patterns that align with those needs, rather than simply adhering to them for the sake of following a trend. Ultimately, the goal should be to keep things as simple as possible while still meeting your long-term architectural needs.
